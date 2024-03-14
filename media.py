@@ -1,7 +1,37 @@
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
+import requests
+from urllib.parse import urlparse
+
+#Получаем имя файла
+def GetFilename(url):
+    parsed_url = urlparse(url)
+    path = parsed_url.path
+    filename = path.split('/')[-1]
+    return filename
+
+def DownloadData(url):
+    # Отправляем GET-запрос для скачивания данных
+    response = requests.get(url)
+
+    # Проверяем статус ответа
+    if response.status_code == 200:
+        #Формируем путь до файла
+        save_path = f"media/{GetFilename(url)}"
+        
+        # Открываем файл для записи
+        with open(save_path, 'wb') as f:
+            # Записываем данные из ответа в файл
+            f.write(response.content)
+        print("Скачивание завершено. Данные сохранены в", save_path)
+        return save_path
+    else:
+        print("Ошибка при скачивании данных:", response.status_code)
 
 #Функция для наложения голоса и музыки на видео
-def MakeVideo(video_path, voice_path, background_music_path, output_path):
+def MakeVideo(video_path, voice_path, background_music_path):
+    #Формирование названия
+    output_path = video_path.replace("video", "result")
+
     #Считываем видео
     video_clip = VideoFileClip(video_path)
 
@@ -25,5 +55,3 @@ def MakeVideo(video_path, voice_path, background_music_path, output_path):
 
     return True
 
-# Пример использования функции
-MakeVideo("media/1-video.mp4", "media/1-voice.mp3", "media/1-bg.mp3", "media/output_video.mp4")
