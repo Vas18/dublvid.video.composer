@@ -25,7 +25,6 @@ def GetPost():
     # Здесь вы можете выполнить обработку данных, например, обработать видео
     result = MakeVideo(video_path=video_src,voice_path=voice_src, background_music_path=bg_sound_src, output_path=output_src)
     print(result)
-    load_dotenv()
     url = os.getenv("RESULT_URL")
     data = {'id': video_id, 'resultUrl': result}
     SendPost(url, data)
@@ -34,5 +33,8 @@ def GetPost():
     return jsonify(data), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    load_dotenv()
+    host = os.getenv("HOST")
+    port = os.getenv("PORT")
+    app.run(host=host, port=port)
 

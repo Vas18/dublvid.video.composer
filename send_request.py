@@ -7,6 +7,8 @@ def SendPost(url, data):
     # Печать ответа
     print(response.json())
 
+#Пример POST запроса
+"""
 if __name__ == "__main__":
     # URL Flask-приложения
     url = 'http://127.0.0.1:5000/'
@@ -20,3 +22,4 @@ if __name__ == "__main__":
     }
 
     SendPost(url, data)
+"""
